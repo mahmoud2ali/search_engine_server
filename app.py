@@ -3,9 +3,17 @@ from flask_cors import CORS
 from pymongo import MongoClient
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
+from transformers import AutoTokenizer, AutoModel 
 # from tensorflow.keras.models import load_model
 import random
 import math
+from sentence_transformers import SentenceTransformer
+import numpy as np
+
+model = SentenceTransformer('./model')
+
+
+
 
 app = Flask(__name__)
 CORS(app)
@@ -45,23 +53,28 @@ def get_random_books():
 
     return jsonify(random_books)
 
-# @app.route('/search/<query>/', defaults={'category': None}, methods=['POST'])
-# @app.route('/search/<query>/<category>', methods=['POST'])
-# def search(query, category):
-#     data = request.get_json()
-#     query = data.get("query", "")
 
-#     Generate embedding for the query
-#     query_embedding = model.encode(query, convert_to_tensor=True)
 
-#     Compute cosine similarity
-#     scores = util.cos_sim(query_embedding, book_embeddings)[0].cpu().numpy()
-#     top_indices = np.argsort(scores)[::-1][:10]
 
-#     Get the top books based on similarity
-#     top_books = [books[i] for i in top_indices]
 
-#     return jsonify(top_books)
+
+@app.route('/search/<query>/', defaults={'category': None}, methods=['POST'])
+@app.route('/search/<query>/<category>', methods=['POST'])
+def search(query, category):
+    data = request.get_json()
+    query = data.get("query", "")
+
+    Generate embedding for the query
+    query_embedding = model.encode(query, convert_to_tensor=True)
+
+    Compute cosine similarity
+    scores = util.cos_sim(query_embedding, book_embeddings)[0].cpu().numpy()
+    top_indices = np.argsort(scores)[::-1][:10]
+
+    Get the top books based on similarity
+    top_books = [books[i] for i in top_indices]
+
+    return jsonify(top_books)
 
 
 if __name__  == "__main__":
