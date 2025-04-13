@@ -5,6 +5,7 @@ from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 # from tensorflow.keras.models import load_model
 import random
+import math
 
 app = Flask(__name__)
 CORS(app)
@@ -35,10 +36,12 @@ def get_random_books():
     for book in random_books:
         book['_id'] = str(book['_id'])
 
-        # Replace None (null) values with 0
-        for key, value in book.items():
-            if value is None:
-                book[key] = 0
+        for book in random_books:
+            for key, value in book.items():
+                if value is None or value == "NaN":
+                    book[key] = 0
+                elif isinstance(value, float) and math.isnan(value):
+                    book[key] = 0
 
     return jsonify(random_books)
 
