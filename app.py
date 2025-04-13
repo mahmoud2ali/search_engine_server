@@ -31,9 +31,14 @@ def get_random_books():
     # Retrieve 10 random books using MongoDB's aggregation pipeline
     random_books = list(collection.aggregate([{"$sample": {"size": 10}}]))
 
-    # Convert ObjectId to string for JSON response
+    # Process each book
     for book in random_books:
         book['_id'] = str(book['_id'])
+
+        # Replace None (null) values with 0
+        for key, value in book.items():
+            if value is None:
+                book[key] = 0
 
     return jsonify(random_books)
 
