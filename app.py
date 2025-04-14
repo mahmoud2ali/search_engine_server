@@ -5,10 +5,10 @@ from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 import random
 import math
-import model
 
 
 app = Flask(__name__)
+
 CORS(app)
 
 
