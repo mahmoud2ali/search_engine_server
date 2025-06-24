@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from sentence_transformers import SentenceTransformer
 from flask_cors import CORS
 from pymongo import MongoClient
 from pymongo.mongo_client import MongoClient
@@ -11,6 +12,7 @@ app = Flask(__name__)
 
 CORS(app)
 
+model = SentenceTransformer('./model')
 
 uri = "mongodb+srv://admin-mahmoud:0123456789@cluster0.8w33a.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 client = MongoClient(uri, server_api=ServerApi('1'))
@@ -46,6 +48,14 @@ def get_random_books():
 
     return jsonify(random_books)
 
+
+
+@app.route('/embed', methods=['POST'])
+def embed():
+    data = request.json
+    text = data.get("text", "")
+    embedding = model.encode(text).tolist()
+    return jsonify({"embedding": embedding})
 
 
 
