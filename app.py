@@ -52,10 +52,15 @@ def get_random_books():
 
 @app.route('/embed', methods=['POST'])
 def embed():
-    data = request.json
-    text = data.get("text", "")
-    embedding = model.encode(text).tolist()
-    return jsonify({"embedding": embedding})
+    try:
+        data = request.json
+        print("Received data:", data)
+        text = data.get("text", "")
+        embedding = model.encode(text).tolist()
+        return jsonify({"embedding": embedding})
+    except Exception as e:
+        print("Error:", str(e))
+        return jsonify({"error": str(e)}), 500
 
 
 
