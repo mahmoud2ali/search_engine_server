@@ -7,10 +7,10 @@ from collections import Counter
 from sentence_transformers import util
 
 # Load the inverted index from the file
-with open('inverted_index.pkl', 'rb') as f:
+with open('./models/inverted_index.pkl', 'rb') as f:
     inverted_index = pickle.load(f)
 
-with open('inverted_index_dict_within_5_length_query.pkl', 'rb') as f:
+with open('./models/inverted_index_dict_within_5_length_query.pkl', 'rb') as f:
     inverted_index_dict_within_5_length_query = pickle.load(f)
 
 print("Inverted index loaded successfully.")
@@ -18,26 +18,22 @@ print("Inverted index loaded successfully.")
 # print(loaded_inverted_index.get("specific_word"))
 
 # Load embedding dictionary
-with open('embedding_dict.pkl', 'rb') as f:
+with open('./models/embedding_dict.pkl', 'rb') as f:
     embedding_dict = pickle.load(f)
 
 print("Embedding dictionary loaded successfully.")
 
-model = SentenceTransformer('./model')
+model = SentenceTransformer('./models/model')
 
 # import preprocessed data  
-df = pd.read_csv('./dataset/preprocessed_data.csv')
-df_original = pd.read_excel('./dataset/books_data.xlsx')
+df = pd.read_csv('./data/preprocessed_data.csv')
+df_original = pd.read_excel('./data/books_data.xlsx')
 
 # searching 
 # update
 def most_repeated(numbers):
     counter = Counter(numbers)
     return counter.most_common()
-
-
-
-
 
 
 def get_embeddings_and_apply_cosine_similarity(row_ids, query, query_genre, threshold=0.85):

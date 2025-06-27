@@ -9,7 +9,6 @@ from helper import *
 from retriving import search
 
 
-ngrok.set_auth_token("2yjJeMm3082uWPbxr5juAFdaPFf_7fV74L1rw37utkYzY3hjP")
 
 app = Flask(__name__)
 
@@ -41,7 +40,11 @@ def embed():
 
         results = search(text, genre)
 
-        return jsonify(results) if results else jsonify({"message": "⚠️ لم يتم العثور على نتائج"})
+        if results:
+            return jsonify(results), 200
+        else:
+            return jsonify({"message": "⚠️ لم يتم العثور على نتائج"}), 404
+        
     except Exception as e:
         print("Data: ",data)
         print("Error:", str(e))
