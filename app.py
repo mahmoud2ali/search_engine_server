@@ -49,8 +49,8 @@ def embed():
     
 
 if __name__  == "__main__":
-    public_url = ngrok.connect(5000, domain="manatee-allowed-nominally.ngrok-free.app")
-    print(" * ngrok tunnel:", public_url)
+    # public_url = ngrok.connect(5000, domain="manatee-allowed-nominally.ngrok-free.app")
+    # print(" * ngrok tunnel:", public_url)
 
     # Start Flask app
     app.run(debug=False, port=5000)
